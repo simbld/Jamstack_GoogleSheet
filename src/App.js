@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	useEffect(() => {
+		fetch(
+			"https://docs.google.com/spreadsheets/d/e/2PACX-1vSfzrIXvrQ-3p8rwErgELD88WKtZvb4d3ib_m8PQVf1ipvlPD03FmhbjQnDn57ULVaGTeu1IFNkU7ir/pub?output=csv"
+		)
+			.then((result) => result.text())
+			.then((text) => console.log(text));
+	}, []);
+	return (
+		<div className="App">
+			<h1>Data GoogleSheet</h1>
+		</div>
+	);
 }
 
 export default App;
