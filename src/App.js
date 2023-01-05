@@ -1,11 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import papa from "papaparse";
 
 import "./App.css";
 
 function App() {
-	const prepareData = (data) => {
-		console.log(data);
+	const [cars, setCars] = useState([]);
+	const preparedData = (data) => {
+		const json = data.map((line, index) => {
+			if (index > 0) {
+				let obj = {};
+				data[0].forEach((key, j) => (obj = { ...obj, [key]: line[j] }));
+				return obj;
+			}
+			return null;
+		});
+		json.shift();
+		console.log(json);
+		setCars(json);
 	};
 	useEffect(() => {
 		fetch(
@@ -13,11 +24,13 @@ function App() {
 		)
 			.then((result) => result.text())
 			.then((text) => papa.parse(text))
-			.then((data) => prepareData(data.data));
+			.then((data) => preparedData(data.data));
 	}, []);
 	return (
 		<div className="App">
 			<h1>Data GoogleSheet</h1>
+			{cars.length > 0 &&
+				cars.map((car) => <div key={car.id} {...car.company_name}></div>)}
 		</div>
 	);
 }
